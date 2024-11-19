@@ -4,9 +4,11 @@ import "antd/dist/reset.css";
 import "./post.css";
 import React, { useEffect, useState } from "react";
 import "antd/dist/reset.css";
+import Loader from "../common/Loader";
 
 const PostFeed = () => {
   const [post, setpost] = useState({});
+  const [loading, setLoading] = useState(true);
   const [showComments, setShowComments] = useState(true);
 
   const getPost = () => {
@@ -14,14 +16,16 @@ const PostFeed = () => {
       .get("https://34272160e57042bc86965ae9b1d45a7f.api.mockbin.io/")
       .then(({ data }) => {
         setpost(data);
+        setLoading(false);
       });
   };
-  
+
   useEffect(() => {
     getPost();
   }, []);
 
   const handleShowComments = () => setShowComments((prevState) => !prevState);
+  if (loading) return <Loader />;
   return (
     <div className="post-card">
       <Card className="card-wrapper">
